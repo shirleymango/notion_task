@@ -1,0 +1,184 @@
+{
+    "object": "list",
+    "results": [
+        {
+            "object": "page",
+            "id": "5a5a1542-bce2-4386-b3d0-2bdd9a3e0951",
+            "created_time": "2023-10-21T20:16:00.000Z",
+            "last_edited_time": "2023-10-21T21:50:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "8326f663-f5aa-46c3-a85f-f199faabff00"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "8326f663-f5aa-46c3-a85f-f199faabff00"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "database_id",
+                "database_id": "0bec57ad-60ef-493b-8427-f98a20b53a36"
+            },
+            "archived": false,
+            "properties": {
+                "Favorites": {
+                    "id": "DI%3E%40",
+                    "type": "number",
+                    "number": 100
+                },
+                "Rating": {
+                    "id": "%5EjQz",
+                    "type": "number",
+                    "number": 4.5
+                },
+                "Book Title": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Barbie World",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Barbie World",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://www.notion.so/Barbie-World-5a5a1542bce24386b3d02bdd9a3e0951",
+            "public_url": "https://vanilla-metal-30b.notion.site/Barbie-World-5a5a1542bce24386b3d02bdd9a3e0951"
+        },
+        {
+            "object": "page",
+            "id": "2459f599-0a03-4f99-8d1d-022cad7b5d24",
+            "created_time": "2023-10-21T20:16:00.000Z",
+            "last_edited_time": "2023-10-21T21:50:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "8326f663-f5aa-46c3-a85f-f199faabff00"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "8326f663-f5aa-46c3-a85f-f199faabff00"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "database_id",
+                "database_id": "0bec57ad-60ef-493b-8427-f98a20b53a36"
+            },
+            "archived": false,
+            "properties": {
+                "Favorites": {
+                    "id": "DI%3E%40",
+                    "type": "number",
+                    "number": 200
+                },
+                "Rating": {
+                    "id": "%5EjQz",
+                    "type": "number",
+                    "number": 3.2
+                },
+                "Book Title": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Cat in the Hat",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Cat in the Hat",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://www.notion.so/Cat-in-the-Hat-2459f5990a034f998d1d022cad7b5d24",
+            "public_url": "https://vanilla-metal-30b.notion.site/Cat-in-the-Hat-2459f5990a034f998d1d022cad7b5d24"
+        },
+        {
+            "object": "page",
+            "id": "c5e6d409-b3f2-4456-b87c-63dcfc0bc2b8",
+            "created_time": "2023-10-21T20:16:00.000Z",
+            "last_edited_time": "2023-10-21T21:49:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "8326f663-f5aa-46c3-a85f-f199faabff00"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "8326f663-f5aa-46c3-a85f-f199faabff00"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "database_id",
+                "database_id": "0bec57ad-60ef-493b-8427-f98a20b53a36"
+            },
+            "archived": false,
+            "properties": {
+                "Favorites": {
+                    "id": "DI%3E%40",
+                    "type": "number",
+                    "number": 10
+                },
+                "Rating": {
+                    "id": "%5EjQz",
+                    "type": "number",
+                    "number": 4.1
+                },
+                "Book Title": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "The Invisible Life of Addie LaRue",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "The Invisible Life of Addie LaRue",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://www.notion.so/The-Invisible-Life-of-Addie-LaRue-c5e6d409b3f24456b87c63dcfc0bc2b8",
+            "public_url": "https://vanilla-metal-30b.notion.site/The-Invisible-Life-of-Addie-LaRue-c5e6d409b3f24456b87c63dcfc0bc2b8"
+        }
+    ],
+    "next_cursor": null,
+    "has_more": false,
+    "type": "page_or_database",
+    "page_or_database": {},
+    "request_id": "f07c6d8d-04ef-47d6-855b-08c77096ea38"
+}
