@@ -1,7 +1,7 @@
 import requests
 
 NOTION_TOKEN = "secret_nXAejSXmHqLfFz1TXxHgzGtFyfnwM6qR90H4GOZI6xU"
-DATABASE_ID = "0bec57ad60ef493b8427f98a20b53a36"
+DATABASE_ID = "46db718cda374bc7aa06b551dc18be9a"
 
 headers = {
     "Authorization": "Bearer " + NOTION_TOKEN,
@@ -47,5 +47,5 @@ pages = get_pages()
 for page in pages:
     page_id = page["id"]
     props = page["properties"]
-    book_title = props["Book Title"]["title"][0]["text"]["content"]
+    book_title = props["Title"]["title"][0]["text"]["content"]
     print(book_title)
