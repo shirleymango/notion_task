@@ -23,13 +23,12 @@ def write_row(client, database_id, title, rating, favorites):
 
 def main():
     client = Client(auth=notion_token)
-    write_row(client, database_id, "test2", 4.1, 90)
     file = open('ratings2.csv')
     csvreader = csv.reader(file)
     rows = []
     for row in csvreader:
         rows.append(row)
-    print(rows)
+        write_row(client, database_id, row[0], float(row[2]), 1)
     file.close()
 
 if __name__ == '__main__':
