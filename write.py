@@ -16,9 +16,20 @@ def delete_rows(csvreader):
         book_person_map[book_person_pair] = float(row[2])
     return book_person_map
 
+def count_favorites(book_person_map):
+    book_favorites_map = {}
+    for key in book_person_map:
+        book = key[0]
+        if book in book_person_map:
+            if book_person_map[key] == 5: book_favorites_map[book] += 1
+        else:
+            if book_person_map[key] == 5: book_favorites_map[book] = 1
+            else: book_favorites_map[book] = 0
+    return book_favorites_map
+
 # Input: mapping of book title and person name to the person's rating of the book
-# Returns array containing formatted data to be added to Notion database
-def data_to_database_array(client, book_person_map):
+# Returns no output but writes formatted data to Notion database
+def write_data(client, book_person_map, book_favorites_map):
     book_rating_map = {}
     book_count_map = {}
     for key in book_person_map:
@@ -29,12 +40,9 @@ def data_to_database_array(client, book_person_map):
         else: 
             book_rating_map[book] = book_person_map[key]
             book_count_map[book] = 1
-    array = []
     for book in book_rating_map:
-        row = [book, book_rating_map[book]/book_count_map[book], book_count_map[book]]
+        row = [book, book_rating_map[book]/book_count_map[book], book_favorites_map[book]]
         write_row(client, database_id, row[0], row[1], row[2])
-        array.append(row)
-    print(array)
 
 # Input: string
 # Returns normalized string with fixed capitalization and no extra spacing
@@ -72,7 +80,8 @@ def main():
     file = open('ratings2.csv')
     csvreader = csv.reader(file)
     book_person_map = delete_rows(csvreader)
-    data_to_database_array(client, book_person_map)
+    book_favorites_map = count_favorites(book_person_map)
+    write_data(client, book_person_map, book_favorites_map)
     file.close()
 
 if __name__ == '__main__':
