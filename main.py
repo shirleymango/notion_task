@@ -8,6 +8,11 @@ database_id = '46db718cda374bc7aa06b551dc18be9a'
 notion_page_id = '1093311273cf47a894d7f4b9eeee992e'
 
 # Input: string
+# Returns string with capital first character and lower case for all other characters
+def capitalize_string(word):
+    return str(word[0]).upper() + word[1:]
+
+# Input: string
 # Returns normalized string with fixed capitalization and no extra spacing
 def normalize_name(name):
     normalized = ""
@@ -23,12 +28,17 @@ def normalize_name(name):
         if not normalized == "":
             # all other words will have preceding space
             normalized += " "
+        # edge case: hyphenated words should have capitalization after hyphen
+        if len(word.split("-")) > 1:
+            subwords = word.split("-")
+            normalized += capitalize_string(subwords[0]) + "-" + capitalize_string(subwords[1])
+            continue
         # edge case: words like 'of' and 'the' should not be capitalized unless at the start or after punctuation
-        if word in prepositions_and_articles and not normalized == "" and not normalized[len(normalized)-1] in punctuation:
+        if word in prepositions_and_articles and not normalized == "" and not normalized[len(normalized)-2] in punctuation:
             normalized += word
         # all other words will be capitalized
         else:
-            normalized += str(word[0]).upper() + word[1:]
+            normalized += capitalize_string(word)
     return normalized
 
 # Input: reader to csv containing rows of book title, person name, rating of book
