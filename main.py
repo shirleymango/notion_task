@@ -1,51 +1,100 @@
-import requests
+import csv
 
-NOTION_TOKEN = "secret_nXAejSXmHqLfFz1TXxHgzGtFyfnwM6qR90H4GOZI6xU"
-DATABASE_ID = "46db718cda374bc7aa06b551dc18be9a"
+from notion_client import Client
+from pprint import pprint
 
-headers = {
-    "Authorization": "Bearer " + NOTION_TOKEN,
-    "Content-Type": "application/json",
-    "Notion-Version": "2022-06-28",
-}
+notion_token = 'secret_nXAejSXmHqLfFz1TXxHgzGtFyfnwM6qR90H4GOZI6xU'
+database_id = '46db718cda374bc7aa06b551dc18be9a'
+notion_page_id = '1093311273cf47a894d7f4b9eeee992e'
 
-def create_page(data: dict):
-    create_url = "https://api.notion.com/v1/pages"
+# Input: string
+# Returns normalized string with fixed capitalization and no extra spacing
+def normalize_name(name):
+    normalized = ""
+    prepositions_and_articles = ["of", "to", "the", "a"]
+    punctuation = [':', '!', '?']
+    words = name.split()
+    for word in words:
+        word = word.lower()
+        # edge case: there may be extra spaces in original string so there will be empty strings after split
+        if word == "":
+            continue
+        # edge case: first word should not have preceding space
+        if not normalized == "":
+            # all other words will have preceding space
+            normalized += " "
+        # edge case: words like 'of' and 'the' should not be capitalized unless at the start or after punctuation
+        if word in prepositions_and_articles and not normalized == "" and not normalized[len(normalized)-1] in punctuation:
+            normalized += word
+        # all other words will be capitalized
+        else:
+            normalized += str(word[0]).upper() + word[1:]
+    return normalized
 
-    payload = {"parent": {"database_id": DATABASE_ID}, "properties": data}
+# Input: reader to csv containing rows of book title, person name, rating of book
+# Returns a mapping of book title and person name to the person's rating of the book
+# Deletes extraneous rows so that only the last rating by a person is remembered
+def delete_rows(csvreader):
+    book_person_map = {}
+    for row in csvreader:
+        book_person_pair = (normalize_name(row[0]), normalize_name(row[1]))
+        book_person_map[book_person_pair] = float(row[2])
+    return book_person_map
 
-    res = requests.post(create_url, headers=headers, json=payload)
-    # print(res.status_code)
-    return res
+# Input: mapping of book title and person name to the person's rating of the book
+# Returns mapping of book title to number of people who gave the book a 5 star rating
+def count_favorites(book_person_map):
+    book_favorites_map = {}
+    for key in book_person_map:
+        book = key[0]
+        if book in book_favorites_map:
+            if book_person_map[key] == 5: book_favorites_map[book] += 1
+        else:
+            if book_person_map[key] == 5: book_favorites_map[book] = 1
+            else: book_favorites_map[book] = 0
+    return book_favorites_map
 
-def get_pages(num_pages=None):
-    """
-    If num_pages is None, get all pages, otherwise just the defined number.
-    """
-    url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
+# Input: client, database id, data to be added to database row
+# Returns no output but writes to one row to Notion database
+def write_row(client, database_id, title, rating, favorites):
+    client.pages.create(
+        **{
+            "parent": {
+                "database_id": database_id
+            },
+            "properties": {
+                "Title": {"title": [{"text": {"content": title}}]},
+                "Rating": {"number": round(rating, 1)},
+                "Favorites": {"number": favorites}
+            }
+        }
+    )
 
-    payload = {"page_size": 100}
-    response = requests.post(url, json=payload, headers=headers)
-    data = response.json()
+# Input: client, mapping of book title and person name to the person's rating of the book, and mapping of book to number of favorites
+# Returns no output but writes formatted data to Notion database
+def write_data(client, book_person_map, book_favorites_map):
+    book_rating_map = {}
+    book_count_map = {}
+    for key in book_person_map:
+        book = key[0]
+        if book in book_rating_map: 
+            book_rating_map[book] += book_person_map[key]
+            book_count_map[book] += 1
+        else: 
+            book_rating_map[book] = book_person_map[key]
+            book_count_map[book] = 1
+    for book in book_rating_map:
+        row = [book, book_rating_map[book]/book_count_map[book], book_favorites_map[book]]
+        write_row(client, database_id, row[0], row[1], row[2])
 
-    import json
-    with open('db.json', 'w', encoding='utf8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-    results = data["results"]
-    return results
+def main():
+    client = Client(auth=notion_token)
+    file = open('ratings.csv')
+    csvreader = csv.reader(file)
+    book_person_map = delete_rows(csvreader)
+    book_favorites_map = count_favorites(book_person_map)
+    write_data(client, book_person_map, book_favorites_map)
+    file.close()
 
-def update_page(page_id: str, data: dict):
-    url = f"https://api.notion.com/v1/pages/{page_id}"
-
-    payload = {"properties": data}
-
-    res = requests.patch(url, json=payload, headers=headers)
-    return res
-
-pages = get_pages()
-
-for page in pages:
-    page_id = page["id"]
-    props = page["properties"]
-    book_title = props["Title"]["title"][0]["text"]["content"]
-    print(book_title)
+if __name__ == '__main__':
+    main()
