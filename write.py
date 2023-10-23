@@ -14,12 +14,20 @@ def normalize_name(name):
     words = name.split()
     for word in words:
         word = word.lower()
+        # edge case: there may be extra spaces in original string so there will be empty strings after split
         if word == "":
             continue
+        # edge case: first word should not have preceding space
         if not normalized == "":
+            # all other words will have preceding space
             normalized += " "
+        # edge case: 'of' and 'to' should not be capitalized
         if word == "of" or word == "to" or (word == "the" and not normalized == ""):
             normalized += word
+        # edge case: 'the' should not be capitalized if at the start or after punctuation
+        if word == "the" and not normalized == "" and not normalized[len(normalized)-1] == ':':
+            normalized += word
+        # all other words will be capitalized
         else:
             normalized += str(word[0]).upper() + word[1:]
     return normalized
