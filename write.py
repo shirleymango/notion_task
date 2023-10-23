@@ -40,7 +40,7 @@ def count_favorites(book_person_map):
     book_favorites_map = {}
     for key in book_person_map:
         book = key[0]
-        if book in book_person_map:
+        if book in book_favorites_map:
             if book_person_map[key] == 5: book_favorites_map[book] += 1
         else:
             if book_person_map[key] == 5: book_favorites_map[book] = 1
@@ -82,7 +82,7 @@ def write_data(client, book_person_map, book_favorites_map):
 
 def main():
     client = Client(auth=notion_token)
-    file = open('ratings2.csv')
+    file = open('ratings.csv')
     csvreader = csv.reader(file)
     book_person_map = delete_rows(csvreader)
     book_favorites_map = count_favorites(book_person_map)
