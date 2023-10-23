@@ -107,13 +107,11 @@ def write_data(client, book_avg_map, book_favorites_map):
 
 def main():
     client = Client(auth=notion_token)
-    file = open('unit_test_avg.csv')
+    file = open('ratings.csv')
     csvreader = csv.reader(file)
     book_person_map = delete_rows(csvreader)
-    print(book_person_map)
     book_favorites_map = count_favorites(book_person_map)
     book_avg_map = find_avg(book_person_map)
-    print(book_avg_map)
     write_data(client, book_avg_map, book_favorites_map)
     file.close()
 
