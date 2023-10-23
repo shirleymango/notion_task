@@ -16,7 +16,7 @@ def capitalize_string(word):
 # Returns normalized string with fixed capitalization and no extra spacing
 def normalize_name(name):
     normalized = ""
-    prepositions_and_articles = ["of", "to", "the", "a"]
+    prepositions_and_articles = ["of", "to", "the", "a", "and"]
     punctuation = [':', '!', '?']
     words = name.split()
     for word in words:
