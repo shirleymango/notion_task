@@ -57,7 +57,7 @@ def write_row(client, database_id, title, rating, favorites):
             },
             "properties": {
                 "Title": {"title": [{"text": {"content": title}}]},
-                "Rating": {"number": rating},
+                "Rating": {"number": round(rating, 1)},
                 "Favorites": {"number": favorites}
             }
         }
