@@ -1,4 +1,5 @@
 import csv
+import sys
 
 from notion_client import Client
 from pprint import pprint
@@ -106,8 +107,9 @@ def write_data(client, book_avg_map, book_favorites_map):
         write_row(client, database_id, row[0], row[1], row[2])
 
 def main():
+    args = sys.argv[1:]
     client = Client(auth=notion_token)
-    file = open('ratings.csv')
+    file = open(args[0])
     csvreader = csv.reader(file)
     book_person_map = delete_rows(csvreader)
     book_favorites_map = count_favorites(book_person_map)
