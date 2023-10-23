@@ -64,25 +64,9 @@ def count_favorites(book_person_map):
             else: book_favorites_map[book] = 0
     return book_favorites_map
 
-# Input: client, database id, data to be added to database row
-# Returns no output but writes to one row to Notion database
-def write_row(client, database_id, title, rating, favorites):
-    client.pages.create(
-        **{
-            "parent": {
-                "database_id": database_id
-            },
-            "properties": {
-                "Title": {"title": [{"text": {"content": title}}]},
-                "Rating": {"number": round(rating, 1)},
-                "Favorites": {"number": favorites}
-            }
-        }
-    )
-
-# Input: client, mapping of book title and person name to the person's rating of the book, and mapping of book to number of favorites
-# Returns no output but writes formatted data to Notion database
-def write_data(client, book_person_map, book_favorites_map):
+# Input: mapping of book title and person name to the person's rating of the book
+# Returns mapping of book title to average star rating
+def find_avg(book_person_map):
     book_rating_map = {}
     book_count_map = {}
     for key in book_person_map:
@@ -93,8 +77,32 @@ def write_data(client, book_person_map, book_favorites_map):
         else: 
             book_rating_map[book] = book_person_map[key]
             book_count_map[book] = 1
+    book_avg_map = {}
     for book in book_rating_map:
-        row = [book, book_rating_map[book]/book_count_map[book], book_favorites_map[book]]
+        book_avg_map[book] = round(book_rating_map[book]/book_count_map[book], 1)
+    return book_avg_map
+
+# Input: client, database id, data to be added to database row
+# Returns no output but writes to one row to Notion database
+def write_row(client, database_id, title, rating, favorites):
+    client.pages.create(
+        **{
+            "parent": {
+                "database_id": database_id
+            },
+            "properties": {
+                "Title": {"title": [{"text": {"content": title}}]},
+                "Rating": {"number": rating},
+                "Favorites": {"number": favorites}
+            }
+        }
+    )
+
+# Input: client, mapping of book title and person name to the person's rating of the book, and mapping of book to number of favorites
+# Returns no output but writes formatted data to Notion database
+def write_data(client, book_avg_map, book_favorites_map):
+    for book in book_avg_map:
+        row = [book, book_avg_map[book], book_favorites_map[book]]
         write_row(client, database_id, row[0], row[1], row[2])
 
 def main():
@@ -103,7 +111,8 @@ def main():
     csvreader = csv.reader(file)
     book_person_map = delete_rows(csvreader)
     book_favorites_map = count_favorites(book_person_map)
-    write_data(client, book_person_map, book_favorites_map)
+    book_avg_map = find_avg(book_person_map)
+    write_data(client, book_avg_map, book_favorites_map)
     file.close()
 
 if __name__ == '__main__':
