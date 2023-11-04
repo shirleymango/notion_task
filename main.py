@@ -1,12 +1,14 @@
 import csv
 import sys
+import os
 
 from notion_client import Client
 from pprint import pprint
+from dotenv import load_dotenv
+load_dotenv()
 
-notion_token = 'secret_nXAejSXmHqLfFz1TXxHgzGtFyfnwM6qR90H4GOZI6xU'
-database_id = '46db718cda374bc7aa06b551dc18be9a'
-notion_page_id = '1093311273cf47a894d7f4b9eeee992e'
+notion_token = os.environ.get("notion_token")
+database_id = os.environ.get("database_id")
 
 # Input: string
 # Returns string with capital first character and lower case for all other characters
