@@ -7,6 +7,8 @@ Given a csv file with a file containing a table with three rows: book name, memb
 - Average rating from all members
 - Number of members who rated the book 5 stars - which we call favoriting
 
+The Notion database page: https://www.notion.so/Book-Ratings-1093311273cf47a894d7f4b9eeee992e.
+
 ## Usage
 Run the following command line:
 ```
