@@ -47,15 +47,21 @@ def normalize_name(name):
 # Input: reader to csv containing rows of book title, person name, rating of book
 # Returns a mapping of book title and person name to the person's rating of the book
 # Deletes extraneous rows so that only the last rating by a person is remembered
+# Time complexity: O(N) where N is the number of rows in the csv reader
 def delete_rows(csvreader):
     book_person_map = {}
+    if not csvreader:
+        return ValueError("The file is empthy")
     for row in csvreader:
+        if len(row) < 3:
+            return ValueError("The file is missing information. Check that each row contains a book name, a reviwer name, and a rating.")
         book_person_pair = (normalize_name(row[0]), normalize_name(row[1]))
         book_person_map[book_person_pair] = float(row[2])
     return book_person_map
 
 # Input: mapping of book title and person name to the person's rating of the book
 # Returns mapping of book title to number of people who gave the book a 5 star rating
+# Time complexity: O(N) where N is the number of book-person reviews
 def count_favorites(book_person_map):
     book_favorites_map = {}
     for key in book_person_map:
@@ -69,6 +75,7 @@ def count_favorites(book_person_map):
 
 # Input: mapping of book title and person name to the person's rating of the book
 # Returns mapping of book title to average star rating
+# Time complexity: O(N) where N is the number of book-person reviews
 def find_avg(book_person_map):
     book_rating_map = {}
     book_count_map = {}
@@ -109,11 +116,14 @@ def write_data(client, book_avg_map, book_favorites_map):
         write_row(client, database_id, row[0], row[1], row[2])
 
 def main():
-    args = sys.argv[1:]
+    args = sys.argv[1:] # read the file name from the terminal argument
     client = Client(auth=notion_token)
     file = open(args[0])
     csvreader = csv.reader(file)
     book_person_map = delete_rows(csvreader)
+    if isinstance(book_person_map, ValueError):
+        print(book_person_map)
+        return
     book_favorites_map = count_favorites(book_person_map)
     book_avg_map = find_avg(book_person_map)
     write_data(client, book_avg_map, book_favorites_map)
